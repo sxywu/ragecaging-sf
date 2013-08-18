@@ -1,0 +1,15 @@
+* {
+
+}
+
+.container {
+	border-radius: 2px;
+	border: 1px solid #e4e4e4;
+	padding: 10px;
+	margin: 10px;
+	display: inline-block;
+}
+
+#player_drinks {
+	width: 80%;
+}
