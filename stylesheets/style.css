@@ -14,8 +14,40 @@
 	width: 80%;
 }
 
+.gameView {
+	width: 475px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#controls {
+	margin-right: auto;
+	margin-left: auto;
+	width: 475px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+/*config*/
 .control {
 	font-size: 1.5em;
 	margin: 10px;
 	display: inline-block;
+	cursor: pointer;
+}
+
+.right {
+	display: inline-block;
+	width: 50%;
+	float: right;
+	text-align: center;
+	font-size: 1.5em;
+}
+
+.left {
+	display: inline-block;
+	width: 50%;
+	float: left;
+	text-align: center;
+	font-size: 1.5em;
 }

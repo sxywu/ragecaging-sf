@@ -13,6 +13,8 @@ define([
 ) {
 	settings = {};
 	settings.height = 25;
+	settings.width = 200;
+	settings.padding = 50;
 	/*
 	the controller for the data (this.model) and the rendering (this.chart)
 	this.model holds 
@@ -30,6 +32,7 @@ define([
 
 		},
 		render: function() {
+			this.$el.html("<span class='left'>betters</span><span class='right'>players</span>");
 			this.chart.data(this.processedData());
 			this.chart(this.el); // render the chart within this element
 			this.renderPlayers();
@@ -69,18 +72,9 @@ define([
 				loser = playersbetters.loser,
 				that = this;
 
-			// _.each(_.flatten(betters), function(model, i) {
-			// 	model.set("x", 0);
-			// 	model.set("y", i * settings.height);
-			// 	if (loser.get("name") !== model.get("name")) {
-			// 		model.set("lost", true);
-			// 	}
-			// 	that.addPlayers(model);
-			// });
-
 			var height = 0;
 			_.each(players, function(player, i) {
-				player.set("x", 200);
+				player.set("x", settings.width + settings.padding);
 				player.set("y", height);
 
 				_.each(betters[player.get("name")], function(better, i) {
@@ -121,7 +115,7 @@ define([
 				height = 0;
 
 			_.each(players, function(player, i) {
-				player.set("x", 200);
+				player.set("x", settings.width + settings.padding);
 				player.set("y", height);
 
 				console.log(player.get("name"), betters[player.get("name")]);

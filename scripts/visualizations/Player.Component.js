@@ -23,21 +23,21 @@ define([
 					return "translate(" + d.position.x + "," + d.position.y + ")";
 				});
 
-			name = player.append("text")
-				.attr("text-anchor", "start")
+			player.append("text")
+				.attr("text-anchor", function(d) {
+					return d.name.anchor;
+				}).attr("x", function(d) {
+					return d.name.x;
+				})
 				.text(function(d) {
-					return d.name;
+					return d.name.name;
 				});
 			player.selectAll("circle")
-				.data(function(d) {
-					return d.circles;
-				}).enter().append("circle")
+				.data(data.circles).enter().append("circle")
 				.attr("r", function(d) {return d.r; })
 				.attr("cx", function(d) {return d.cx; })
 				.attr("cy", function(d) {return d.cy; })
 				.attr("fill", function(d) {return d.fill; });
-
-
 		}
 
 		/*
@@ -69,17 +69,22 @@ define([
 					return "translate(" + d.position.x + "," + d.position.y + ")";
 				});
 
-			circles = player.selectAll("circle")
-				.data(function(d) {
-					return d.circles;
+			player.select("text")
+				.datum(data.name)
+				.attr("text-anchor", function(d) {
+					return d.anchor;
+				}).attr("x", function(d) {
+					return d.x;
 				});
+			circles = player.selectAll("circle")
+				.data(data.circles);
+			circles.exit().remove();
 			circles.enter().append("circle");
 			circles.transition().duration(750)
 				.attr("r", function(d) {return d.r; })
 				.attr("cx", function(d) {return d.cx; })
 				.attr("cy", function(d) {return d.cy; })
 				.attr("fill", function(d) {return d.fill; });
-			circles.exit().transition().duration(750).remove();
 
 		}
 
