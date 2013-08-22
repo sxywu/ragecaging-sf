@@ -36,39 +36,107 @@ define([
 
 			return this;
 		},
-		renderBetters: function() {
-			
+		getPlayersBetters: function() {
+			var that = this,
+				betters = this.model.players.chain()
+					.filter(function(player) {
+						return player.get("type") === "better";
+					}).groupBy(function(player) {
+						return player.get("bet");
+					}).value(),
+				players = this.model.players.chain()
+					.filter(function(player) {
+						return player.get("type") === "player";
+					}).value(),
+				loser = _.find(players, function(player) {
+					return player.get("lost");
+				});
+
+			console.log(betters, players);
+			// set how many betters there are on a player
+			_.each(betters, function(val, bet) {
+				var player = _.find(players, function(player) {
+						return player.get("name") === bet;
+					});
+				player.set("betters", val.length);
+			});
+			return {betters: betters, players: players, loser: loser};
 		},
 		renderPlayers: function() {
-			var that = this,
-				view;
-			this.model.players.each(function(model, i) {
-				model.set("x", 100);
-				model.set("y", i * settings.height);
-				that.addPlayers(model);
+			var playersbetters = this.getPlayersBetters(),
+				betters = playersbetters.betters,
+				players = playersbetters.players,
+				loser = playersbetters.loser,
+				that = this;
+
+			// _.each(_.flatten(betters), function(model, i) {
+			// 	model.set("x", 0);
+			// 	model.set("y", i * settings.height);
+			// 	if (loser.get("name") !== model.get("name")) {
+			// 		model.set("lost", true);
+			// 	}
+			// 	that.addPlayers(model);
+			// });
+
+			var height = 0;
+			_.each(players, function(player, i) {
+				player.set("x", 200);
+				player.set("y", height);
+
+				_.each(betters[player.get("name")], function(better, i) {
+					better.set("x", 0);
+					better.set("y", height + i * settings.height);
+
+					if (loser.get("name") !== better.get("bet")) {
+						better.set("lost", true);
+					} else {
+						better.set("lost", false);
+					}
+					that.addPlayers(better);
+				});
+
+				that.addPlayers(player);
+
+				height += settings.height * (player.get("betters") === 0 ? 1 : player.get("betters"));
 			});
 		},
 		addPlayers: function(model) {
-			console.log("add");
 			var view = new PlayerView({model: model});
 			view.render(this.chart.players());
 
 			this.views[model.cid] = view;
 		},
 		removePlayers: function(model) {
-			console.log("remove");
 			var view = this.views[model.cid];
 			view.remove();
 
 			delete this.views[model.cid];
 		},
 		updatePlayers: function() {
-			console.log("update");
-			var view,
-				that = this;
-			this.model.players.each(function(model, i) {
-				model.set("x", 100);
-				model.set("y", i * settings.height);
+			var playersbetters = this.getPlayersBetters(),
+				betters = playersbetters.betters,
+				players = playersbetters.players,
+				loser = playersbetters.loser,
+				that = this,
+				height = 0;
+
+			_.each(players, function(player, i) {
+				player.set("x", 200);
+				player.set("y", height);
+
+				console.log(player.get("name"), betters[player.get("name")]);
+				_.each(betters[player.get("name")], function(better, i) {
+					better.set("x", 0);
+					better.set("y", height + i * settings.height);
+
+					if (loser.get("name") !== better.get("bet")) {
+						better.set("lost", true);
+					} else {
+						better.set("lost", false);
+					}
+				});
+
+				height += settings.height * (player.get("betters") === 0 ? 1 : player.get("betters"));
 			});
 		},
 		processedData: function() {

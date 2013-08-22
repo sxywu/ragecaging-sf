@@ -23,18 +23,28 @@ define([
 				model = new GameModel(json);
 			this.gameView = new GameView({model: model});
 			this.$el.append(this.gameView.render().el);
-
-			i += 1;
 		},
 		events: {
-			"click .forward": "forward"
+			"click .forward": "forward",
+			"click .back": "backward"
 		},
 		forward: function() {
+			i += 1;
 			i = i % this.collection.models.length;
 			var json = this.collection.models[i].toJSON();
 			this.gameView.model.set(json);
 
-			i += 1;
+			this.$(".number").text(i + 1);
+		},
+		backward: function() {
+			if (i > 0) {
+				i -= 1;
+				i = i % this.collection.models.length;
+				var json = this.collection.models[i].toJSON();
+				this.gameView.model.set(json);
+
+				this.$(".number").text(i + 1);
+			}
 		}
 	});
 });
