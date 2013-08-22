@@ -55,7 +55,6 @@ define([
 					return player.get("lost");
 				});
 
-			console.log(betters, players);
 			// set how many betters there are on a player
 			_.each(betters, function(val, bet) {
 				var player = _.find(players, function(player) {
@@ -118,7 +117,6 @@ define([
 				player.set("x", settings.width + settings.padding);
 				player.set("y", height);
 
-				console.log(player.get("name"), betters[player.get("name")]);
 				_.each(betters[player.get("name")], function(better, i) {
 					better.set("x", 0);
 					better.set("y", height + i * settings.height);
