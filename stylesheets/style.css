@@ -13,3 +13,9 @@
 #player_drinks {
 	width: 80%;
 }
+
+.control {
+	font-size: 1.5em;
+	margin: 10px;
+	display: inline-block;
+}

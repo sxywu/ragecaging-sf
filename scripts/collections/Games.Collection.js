@@ -1,11 +1,15 @@
 define([
 	"jquery",
 	"underscore",
-	"backbone"
+	"backbone",
+	"app/models/Game.Model"
 ], function(
 	$,
 	_,
-	Backbone
+	Backbone,
+	GameModel
 ) {
-	
+	return Backbone.Collection.extend({
+		model: GameModel
+	});
 });
